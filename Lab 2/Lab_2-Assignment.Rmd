@@ -2,8 +2,8 @@
 title: "BIOL3872 Lab2-Assignment"
 output: html_document
 date: "`r Sys.Date()`"
-author: ""
-student_id: ""
+author: "Simona Busillo"
+student_id: "B00926293"
 ---
 
 **BEFORE STARTING:**\
@@ -26,10 +26,10 @@ You measured the body length (in cm) of 6 salamanders: 12.5, 14.2, 11.8, 13.6, 1
 
 ```{r}
 # a)
-# YOUR CODE HERE
+salamander_lengths <- c(12.5, 14.2, 11.8, 13.6, 15.1, 12.9)
 
 # b)
-# YOUR CODE HERE
+mean_length <- mean(salamander_lengths)
 ```
 
 :::
@@ -50,16 +50,15 @@ Using the `salamander_lengths` vector from Task 1:
 
 ```{r}
 # a)
-# YOUR CODE HERE
+num_salamanders <- length(salamander_lengths)
 
 # b)
-# YOUR CODE HERE
-
+longest_salamander <- max(salamander_lengths)
 # c)
-# YOUR CODE HERE
+shortest_salamander <- min(salamander_lengths)
 
 # d)
-# YOUR CODE HERE
+last_salamander <- salamander_lengths[length(salamander_lengths)]
 ```
 
 :::
@@ -83,11 +82,11 @@ The following code has **THREE errors**. Fix them so the code runs correctly.
 
 ```{r}
 # a)
-# YOUR CODE HERE
+sample_size <- 50
 # b)
-# YOUR CODE HERE
+Species_name <- "Ambystoma maculatum"
 # c)
-# YOUR CODE HERE
+is_endangered <- FALSE
 ```
 
 :::
@@ -115,13 +114,13 @@ Recorded daily temperatures (deg C) for one week:
 
 ```{r}
 # a)
-# YOUR CODE HERE
+daily_temps <- c(18.2,19.5,NA,22.1,20.8,17.9,21.3 )
 
 # b)
-# YOUR CODE HERE
+mean_temp <- mean(daily_temps, na.rm = TRUE) 
 
 # c)
-# YOUR CODE HERE
+num_missing <- sum(is.na(daily_temps))   
 ```
 
 :::
@@ -139,15 +138,15 @@ Using the `daily_temps` vector from Task 4:
 
 ```{r}
 # a)
-# YOUR CODE HERE
+temps_above_20 <- daily_temps[daily_temps>20]
 
 # b)
-# YOUR CODE HERE
-# YOUR CODE HERE
-# YOUR CODE HERE
+daily_temps <- c(18.2,19.5,NA,22.1,20.8,17.9,21.3 )
+mean_temp <- mean(daily_temps,na.rm=TRUE)
+daily_temps[is.na(daily_temps)] <- mean_temp
 
 # c)
-# YOUR CODE HERE
+sum(is.na(daily_temps))
 ```
 
 :::
@@ -170,7 +169,12 @@ Create a data frame called `field_samples` with the following data:
 After creating the data frame, display its structure using `str()`.
 
 ```{r}
-# YOUR CODE HERE
+field_samples <- data_frame(
+  sample_id=c("S001","S002","S003","S004","S005"),
+  pH=c(6.8,7.2,6.5,7.8,7.0),
+  depth_m=c(2.5,5.0,1.5,8.0,3.5),
+  location=c("Lake A","Lake A","Lake B","Lake B","Lake A"))
+str(field_samples)
 ```
 
 :::
@@ -189,13 +193,13 @@ Using the `field_samples` data frame from Task 6:
 
 ```{r}
 # a)
-# YOUR CODE HERE
+ph_values <- field_samples$pH
 
 # b)
-# YOUR CODE HERE
+avg_depth <- mean(field_samples$depth_m)
 
 # c)
-# YOUR CODE HERE
+lake_b_samples <- field_samples[field_samples$location == "Lake B",]
 ```
 
 :::
@@ -213,13 +217,13 @@ Using the `field_samples` data frame from Task 6:
 
 ```{r}
 # a)
-# YOUR CODE HERE
+field_samples$depth_ft <- field_samples$depth_m*3.8
 
 # b)
-# YOUR CODE HERE
+field_samples$is_deep <- ifelse(field_samples$depth_m >4,"Deep", "Not Deep")
 
 # c)
-# YOUR CODE HERE
+str(field_samples)
 ```
 
 :::
@@ -259,23 +263,31 @@ You are analyzing data from a marine survey.
 
 ```{r}
 # a)
-# YOUR CODE HERE
+marine_survey <- data_frame(
+  station=c("ST1","ST2","ST3","ST4","ST5","ST6"),
+  depth_m=c(5,15,25,10,30,20),
+  temperature_c=c(22.5,18.3,12.8,20.1,10.5,15.2),
+  salinity_ppt=c(35.2,35.8,36.1,35.5,36.5,35.9),
+  species_count=c(45,32,18,38,12,25))
 
 # b)
-# YOUR CODE HERE
+marine_survey$depth_category <- ifelse(marine_survey$depth_m <=15,"shallow", "deep")
 
 # c)
-# YOUR CODE HERE
+species_mean <- mean(marine_survey$species_count)
+species_median <-median(marine_survey$species_count)
+species_min <- min(marine_survey$species_count)
+species_max <- max(marine_survey$species_count)
+species_sd <-sd(marine_survey$species_count)
 
 # d)
-# YOUR CODE HERE
+deep_stations <- marine_survey[marine_survey$depth_category == "deep",]
 
 # e)
-# YOUR CODE HERE
+sorted_survey <-marine_survey[order(marine_survey$species_count, decreasing = TRUE), ]
 
 # f)
-# YOUR CODE HERE
-
+depth_species_cor <- cor(marine_survey$depth_m,marine_survey$species_count)
 ```
 
 :::
@@ -287,6 +299,6 @@ You are analyzing data from a marine survey.
 
 In the space below, provide your interpretation of the correlation coefficient from Task 9f.
 
-*Your interpretation here...*
+#strong, negative correlation between depth and species count in the marine survey
 
 :::
