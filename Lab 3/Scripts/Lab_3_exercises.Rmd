@@ -8,7 +8,7 @@ output:
   pdf_document: default
   css: styles.css
 editor_options:
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 # Introduction
@@ -99,8 +99,8 @@ iris[1:2,]
 Some convenience functions to inspect aspects of a data frame.
 
 ```{r}
-names(iris)
-rownames(iris)
+names(iris) #column names
+rownames(iris) #row names
 
 #What is the structure of this *dataframe*
 str(iris)
@@ -117,13 +117,15 @@ A)  What are the exact measurements (Sepal.Length, Sepal.Width, Petal.Length, Pe
 
 ```{r}
 # YOUR CODE HERE
-
+first <-iris[1,]
+last <- iris[nrow(iris),]
 ```
 :::
 
 ```{r}
 # How can we construct new dataframes?
-
+?cbind
+new_df <- cbind(iris$Sepal.Length,iris$Species)
 # What about basic data descriptions?
 summary(iris)
 ```
@@ -133,14 +135,17 @@ summary(iris)
 plot(iris)
 
 # How can we modify plot specifics?
-
+plot(iris,
+     col="forestgreen",
+     pch=19)
 # Plotting one variable?
+plot(iris[,5])
 ```
 
 What about coloring by data frame categories?
 
 ```{r}
-# per species
+# points coloured per species
 plot(iris$Sepal.Length, col = iris$Species)
 ```
 
@@ -152,6 +157,10 @@ B)  Which species has (on average) the longest and widest petals? Store it as a 
 
 ```{r}
 # YOUR CODE HERE
+#B)
+
+plot(iris,col=iris$Species) #petal on this plot is the yaxis -> virginica is biggest
+#each species is given a factor (species 1=black, species 2=red, species 3=green)
 
 ```
 :::
@@ -222,6 +231,7 @@ Let's make this better by changing the axis labels (which take the sliced column
 ```{r}
 # Histogram with colored bars and better labels
 hist(iris$Sepal.Length, col = "maroon", breaks = 30, xlab="Sepal Length (cm)", main = "Iris data")
+#type 'colours' to view all the colour options
 ```
 
 **These code chunks can be hard to read.** Split the lines for readability.
@@ -259,6 +269,7 @@ We often inspect parts of our data for exploration and `base` R has several conv
 
 ```{r}
 # We will create a new object based on this subset
+# return objects where species is "setosa" OR (|) "versicolour" -> use & if you want to return something with the both names
 
 iris_subset <- subset(iris, 
                       Species == "setosa" | 
@@ -362,8 +373,9 @@ There are also options for summary statistics, scales, colors, and annotations, 
 ```{r}
 ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length, color = Species))+
   geom_point()
+# add the data the aesthetics (x-axis=petal length, y-axis = sepal length, colour each point by species), then add type of graph/geometry (point = geometry)
 
-# You can see the legend is automatically added, that is because we specified the color grouping by species in the aesthetic
+# You can see the legend is automatically added, that is because we specified the color grouping by species in the aesthetic **must include in the aes if you want it to change**
 ```
 
 `geom_point` summons the data, while if we only specified the ggplot argument it would generate a blank plot
@@ -377,10 +389,10 @@ Here are some examples:
 ```{r}
 ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length, color = Species))+
   geom_point(alpha = 0.5, size = 3) + 
-  theme_bw(12) +
+  theme_bw(12) + # theme changes the background theme -> do '?theme' to explore themes
   labs(x = "Petal length (cm)", y = "Sepal length (cm)")+
   ggtitle("Iris species")+
-  # x axis xustomization with labels specified by sequence
+  # x axis customization with labels specified by sequence
   scale_x_continuous(breaks = seq(0,8,1))
 ```
 
@@ -395,12 +407,12 @@ ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Length))+
   ggtitle("Iris species")+
   # x axis xustomization with labels specified by sequence
   scale_x_continuous(breaks = seq(0,8,1))+
-  guides(color = guide_legend(override.aes = list(alpha = 1)))
+  guides(color = guide_legend(override.aes = list(alpha = 1))) #overrides transparency in legend and sets them back to normal (1)
 ```
 
 ```{r}
 ggplot(data = iris, aes(x = Petal.Length, y = Sepal.Width, fill = Species))+
-  geom_violin() + 
+  geom_violin() + #shows distribution across a range 
   theme_bw(12) +
   labs(x = "Petal length (cm)", y = "Sepal length (cm)")+
   # x axis xustomization with labels specified by sequence
@@ -430,7 +442,11 @@ C)  Create a new `iris` object (e.g., `iris_task4`) where the `Species` factor c
 
 ```{r}
 # YOUR CODE HERE
-
+#C) pipe %>% (command+shift+m)
+iris %>% 
+  mutate(Species=factor(Species,levels(rev(levels(iris$Species))))) %>% 
+  ggplot(aes(x=Species, y=Petal.Length,colour = Species)+
+           geom_point())
 ```
 :::
 
@@ -497,9 +513,9 @@ A `pdf()` can generally produce higher quality figure formats relying on vector 
 
 # Using base R
 par(mfrow= c(1,1))
-png("../Figures/Example-baseR.pdf", width = 12, height = 12, units = "cm", res = 600)
+png("../Figures/Example-baseR.pdf", width = 12, height = 12, units = "cm", res = 600) #..change output folder, set dimensions and resolution accordingly
 plot(iris, col = iris$Species)
-dev.off()
+dev.off() #tells you it's saved
 
 # Using a ggplot 
 p <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, color = Species))+
