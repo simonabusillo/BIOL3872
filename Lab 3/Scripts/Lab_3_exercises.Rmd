@@ -8,7 +8,7 @@ output:
   pdf_document: default
   css: styles.css
 editor_options:
-  chunk_output_type: inline
+  chunk_output_type: console
 ---
 
 # Introduction
@@ -445,8 +445,8 @@ C)  Create a new `iris` object (e.g., `iris_task4`) where the `Species` factor c
 #C) pipe %>% (command+shift+m)
 iris %>% 
   mutate(Species=factor(Species,levels(rev(levels(iris$Species))))) %>% 
-  ggplot(aes(x=Species, y=Petal.Length,colour = Species)+
-           geom_point())
+  ggplot(aes(x=Species, y=Petal.Length,colour = Species))+
+           geom_point()
 ```
 :::
 
