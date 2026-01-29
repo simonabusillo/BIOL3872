@@ -107,10 +107,9 @@ temp_p
 Now we can combine these in a way to tell story like Minard was able to do. A nice relatively new package called `patchwork` can help us string together `ggplot`s in an organized way.
 
 ```{r}
-Napoleons_retreat <- polished_p + 
-  temp_p + 
+Napoleons_retreat <- polished_p + temp_p + 
   plot_layout(ncol = 1, 
-              axis_titles = "collect_x")
+              axis_titles = "collect_x") # ncol=1 means combined together in one column
 ```
 
 This is not as elegant as Minard's depiction, but it was **significantly** easier to produce. Such is the power of programmatic tools. This is a small example as an entry point into broader principles of visualization that we will cover today. These are inspired by Edward Tufte.
